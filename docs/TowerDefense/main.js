@@ -138,7 +138,7 @@ function update() {
     init_posX = G.tower_W + 6;
     init_posY = G.H - G.tower_H - 14;
   }
-
+  let pts = 10; 
   //enemies spawn
   if (enemies.length === 0) {
     for (let i = 0; i < 5; i++) {
@@ -147,7 +147,12 @@ function update() {
       })
     }
     waveCount++;
+    
   }
+   if (waveCount % 2 == 0) { 
+     Espeed += 0.003; 
+     pts += 10; 
+   }
 
   //paint the aim
   aim.pos = vec(input.pos.x, input.pos.y);                                        //aim is where player's mouse at
@@ -192,12 +197,15 @@ function update() {
    return(collide.rect.yellow);                               //collide with arrow, enemy dies
   });
 
+  
   remove(arrows,(ar) => {
     color("yellow");
     const collide =box(ar.pos,1).isColliding.rect.red;        //painting arrows
     if(collide){                                  
-      addScore(10,ar.pos)                                     //if kill enemy, add score
+      addScore(pts,ar.pos)                                     //if kill enemy, add score
+      
     }
     return( collide ||!ar.pos.isInRect(0, 0, G.W, G.H ));    //destory the arrow if out of the scene || collide with enemy
   });
+  
 }
